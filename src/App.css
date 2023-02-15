@@ -1,18 +1,16 @@
 .square-field {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(var(--cols, 5), min-content);
   margin-top: 20px;
+  gap: 2px;
 }
 
 .square {
   background-color: #fff;
   border: 1px solid #000;
   height: 50px;
-  margin: 5px;
-  transition: background-color 0.3s ease;
   width: 50px;
+  transition: background-color 0.3s ease;
 }
 
 .square.blue {
