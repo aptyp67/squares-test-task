@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Mode } from './types';
+import { ModeSelect } from './components/ModeSelect';
+import HoveredSquaresList from './components/HoveredSquaresList';
+import { SquareField } from './components/SquareField';
 import './App.css';
-
-interface Mode {
-  field: number;
-}
 
 function App() {
   const [modes, setModes] = useState<Mode[]>([]);
@@ -26,10 +26,6 @@ function App() {
     }
   }
 
-  function handleModeSelection(event: React.ChangeEvent<HTMLSelectElement>) {
-    setSelectedModeIndex(Number(event.target.value));
-  }
-
   function handleStartClick() {
     if (selectedModeIndex !== -1) {
       const fieldSize = modes[selectedModeIndex].field;
@@ -49,35 +45,29 @@ function App() {
     }
   }
 
-  const selectedMode = modes[selectedModeIndex];
-
   return (
     <div>
       <h1>StarNavi: Test task</h1>
-      <div>
-        <select value={selectedModeIndex} onChange={handleModeSelection}>
-          <option value={-1}>Select a mode</option>
-          {modes.map((mode, index) => (
-            <option key={index} value={index}>Mode {index + 1} ({mode.field}x{mode.field})</option>
-          ))}
-        </select>
-        <button onClick={handleStartClick} disabled={selectedModeIndex === -1}>Start</button>
-      </div>
-      {squares.length > 0 && (
-        <div className="square-field" style={{
-          gridTemplateColumns: `repeat(var(--cols, ${gridColumns}), min-content)`,
-        }}>
-          {squares.map((_, index) => (
-            <div
-              key={index}
-              className={hoveredSquares.includes(index) ? "square blue" : "square"}
-              onMouseEnter={() => handleSquareHover(index)}
-            />
-          ))}
-        </div>
-      )}
+      <ModeSelect
+        modes={modes}
+        selectedModeIndex={selectedModeIndex}
+        handleModeSelection={setSelectedModeIndex}
+        handleStartClick={handleStartClick}
+      />
+      <SquareField
+        squares={squares}
+        hoveredSquares={hoveredSquares}
+        gridColumns={gridColumns}
+        handleSquareHover={handleSquareHover}
+      />
+      <HoveredSquaresList
+        hoveredSquares={hoveredSquares}
+        cols={gridColumns}
+      />
     </div>
   );
 }
+
+
 
 export default App;
